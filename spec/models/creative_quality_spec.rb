@@ -17,4 +17,12 @@ describe CreativeQuality do
       expect(creative_quality.color).to be_instance_of(String)
     end
   end
+
+  describe '#average_score' do
+    let(:creative_quality) { CreativeQuality.new }
+
+    it 'gets 0 when there are no responses' do
+      expect(creative_quality.average_score).to eql(0)
+    end
+  end
 end

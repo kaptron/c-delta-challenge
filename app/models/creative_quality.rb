@@ -13,4 +13,16 @@ class CreativeQuality < ApplicationRecord
     taken = self.class.taken_colors
     self.color = BootstrapColorService.new(taken: taken).random_available_color
   end
+
+  def average_score
+    Rails.cache.fetch "cq-avg-score-#{id}" do
+      total = []
+      Response.find_each do |response|
+        q = response.qualities.find { |q| q[:creative_quality_id] == self.id }
+        total << q[:normalized_score]
+      end
+      return 0 if total.empty?
+      total.sum / total.count
+    end
+  end
 end

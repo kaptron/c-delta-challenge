@@ -17,7 +17,9 @@ class Response < ApplicationRecord
   def qualities
     results = []
     CreativeQuality.find_each do |creative_quality|
-      qrs = question_responses.select { |qr| qr.creative_quality.id == creative_quality.id }
+      qrs = question_responses
+        .includes(question_choice: [:creative_quality, :question])
+        .where('question_choices.creative_quality_id' => creative_quality.id)
       max_score = qrs.collect { |qr| qr.question.max_score }.sum
       min_score = qrs.collect { |qr| qr.question.min_score }.sum
       raw_score = qrs.collect { |qr| qr.question_choice.score }.sum
