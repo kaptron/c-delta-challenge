@@ -6,4 +6,8 @@ class QuestionChoice < ApplicationRecord
   validates :question, presence: true
   validates :creative_quality, presence: true
   validates :score, numericality: { only_integer: true }
+
+  def color
+    score >= 0 ? 'success' : 'danger'
+  end
 end

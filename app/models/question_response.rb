@@ -6,4 +6,5 @@ class QuestionResponse < ApplicationRecord
   validates :response, presence: true
 
   delegate :question, to: :question_choice
+  delegate :creative_quality, to: :question_choice
 end
