@@ -13,6 +13,19 @@
         of
         <%= Question.count %>
         questions
+
+        <hr />
+
+        <% @response.qualities.each do |quality| %>
+          <strong class="text-<%= quality[:normalized_score] > 50 ? 'success' : 'danger' %>">
+            <%= quality[:name] %>: <%= quality[:normalized_score] %>
+          </strong>
+          <ul>
+            <li>Raw score: <%= quality[:raw_score] %></li>
+            <li class="text-muted">Min score: <%= quality[:min_score] %></li>
+            <li class="text-muted">Max score: <%= quality[:max_score] %></li>
+          </ul>
+        <% end %>
       </div>
     </div>
 
@@ -26,8 +39,9 @@
           <tr>
             <td>
               <% if question_choice == question_response.question_choice %>
-                <strong>
+                <strong class="text-<%= question_choice.color %>">
                   <%= question_choice.text %>
+                  <%= question_choice.score %>
                 </strong>
               <% else %>
                 <span class="text-muted">

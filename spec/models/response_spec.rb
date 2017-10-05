@@ -18,6 +18,31 @@ describe Response do
     end
   end
 
+  describe '#qualities' do
+    let(:response) { build(:response) }
+    let(:qualities) { response.qualities }
+
+    before do
+      # will build a unique creative_quality per response
+      response.question_responses = build_list(:question_response, 3)
+    end
+
+    it 'gets a list of scores per creative quality' do
+      expect(qualities.count).to eql(3)
+    end
+
+    it 'gets a min and max score per creative quality' do
+      quality = qualities.first
+      expect(quality[:min_score]).to be <= quality[:max_score]
+    end
+
+    it 'gets a normalized score between 0 and 100' do
+      quality = qualities.first
+      expect(quality[:normalized_score]).to be <= 100
+      expect(quality[:normalized_score]).to be >= 0
+    end
+  end
+
   describe '#completed?' do
     let(:response) { Response.new }
 
